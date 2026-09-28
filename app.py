@@ -8,6 +8,10 @@ from pathlib import Path
 app = Flask(__name__, static_folder='static')
 CORS(app)
 
+# Reject oversized uploads before processing. Files are only kept in a temporary
+# local path during conversion and are deleted in the finally block below.
+app.config['MAX_CONTENT_LENGTH'] = 20 * 1024 * 1024  # 20 MB
+
 # Initialize MarkItDown
 md_converter = MarkItDown()
 
@@ -62,6 +66,10 @@ def convert_pdf():
             'error': 'Conversion failed',
             'message': str(e)
         }), 500
+
+@app.errorhandler(413)
+def request_entity_too_large(error):
+    return jsonify({'error': 'PDF quá lớn. Giới hạn là 20 MB.'}), 413
 
 @app.route('/health')
 def health():

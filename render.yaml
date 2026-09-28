@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: pdf2md-converter
+    runtime: python
+    region: singapore
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    healthCheckPath: /health
+    autoDeploy: true
