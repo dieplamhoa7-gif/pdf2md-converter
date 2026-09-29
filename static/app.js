@@ -117,14 +117,9 @@ convertBtn.addEventListener('click', async () => {
         }, 500);
         
     } catch (err) {
-        console.error(err);
+        console.error('Conversion error:', err);
         progress.classList.remove('show');
-        showError('Lỗi: ' + err.message + '\n\nĐể demo, bạn cần deploy Firebase Functions. Hiện tại đang dùng mock data.');
-        
-        // Mock result for demo
-        markdownResult = `# ${selectedFile.name}\n\n**Demo Result**\n\nĐây là kết quả mẫu. Để sử dụng thực tế, cần:\n\n1. Deploy Firebase Functions với MarkItDown\n2. Cấu hình Python runtime\n3. Upload file lên Cloud Storage\n\n## Tính năng\n\n- Chuyển đổi PDF sang Markdown\n- Hỗ trợ OCR (optional)\n- Giữ nguyên cấu trúc văn bản\n- Tables, lists, headings\n\n---\n\n*Powered by MarkItDown*`;
-        
-        showResult(markdownResult);
+        showError('❌ Lỗi chuyển đổi: ' + err.message + '\n\nVui lòng thử lại hoặc chọn file PDF khác.');
     } finally {
         convertBtn.disabled = false;
     }
